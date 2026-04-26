@@ -256,10 +256,10 @@ const showExamples = ref(false)
 
 const EXAMPLES = {
   es: [
-    { tag: 'POLÍTICA', prompt: 'Si el gobierno de México anuncia una reforma fiscal que incrementa el IVA del 16% al 20%, ¿qué tendencias de opinión pública surgirán en redes sociales y cuáles serán los grupos más afectados?' },
+    { tag: 'POLÍTICA', prompt: 'Si el gobierno de México anunciara una reforma fiscal que incrementara el IVA del 16% al 20%, ¿qué tendencias de opinión pública surgirían en redes sociales y cuáles serían los grupos más afectados?' },
     { tag: 'SALUD', prompt: 'Ante un brote de dengue en Colombia que afecta tres departamentos simultáneamente, simula cómo evolucionará la comunicación de riesgo, qué grupos promoverán medidas preventivas y cuáles las rechazarán.' },
     { tag: 'TECNOLOGÍA', prompt: 'Una startup argentina lanza una IA generativa para reemplazar tareas administrativas en el sector público. Predice el debate en redes, resistencias sindicales y apoyo ciudadano durante las primeras semanas.' },
-    { tag: 'ECONOMÍA', prompt: 'Chile sube el salario mínimo un 25% de forma inmediata. Simula las reacciones del sector empresarial, trabajadores, economistas y medios de comunicación en Twitter y foros.' },
+    { tag: 'ECONOMÍA', prompt: 'Si Chile subiera el salario mínimo un 25% de forma inmediata, ¿cómo reaccionarían el sector empresarial, los trabajadores, los economistas y los medios de comunicación en redes sociales y foros?' },
     { tag: 'MEDIO AMBIENTE', prompt: '¿Cómo reaccionaría la opinión pública latinoamericana si Brasil anunciara la apertura de nuevas concesiones mineras en la Amazonia, y qué coaliciones de actores se formarían a favor y en contra?' }
   ],
   en: [
