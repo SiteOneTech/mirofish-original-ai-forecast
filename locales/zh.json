@@ -30,7 +30,9 @@
     "description": "MiroFish - 社交媒体舆论模拟系统"
   },
   "nav": {
-    "visitGithub": "访问我们的Github主页"
+    "visitGithub": "访问我们的Github主页",
+    "toggleDarkMode": "切换深色模式",
+    "toggleLightMode": "切换浅色模式"
   },
   "home": {
     "tagline": "简洁通用的群体智能引擎",
@@ -69,6 +71,8 @@
     "promptPlaceholder": "// 用自然语言输入模拟或预测需求（例.武大若发布撤销肖某处分的公告，会引发什么舆情走向）",
     "engineBadge": "引擎: MiroFish-V1.0",
     "startEngine": "启动引擎",
+    "examplesLabel": "示例",
+    "examplesClickHint": "点击使用此示例",
     "initializing": "初始化中..."
   },
   "main": {
@@ -247,7 +251,9 @@
     "panelRelatedEdges": "相关关系",
     "panelRelatedNodes": "相关节点",
     "world1": "世界1",
-    "world2": "世界2"
+    "world2": "世界2",
+    "downloadReport": "下载报告",
+    "downloadReportTitle": "下载 Markdown 格式报告"
   },
   "step5": {
     "interactiveTools": "Interactive Tools",
@@ -537,6 +543,7 @@
     "stopException": "停止异常: {error}",
     "allPlatformsCompleted": "✓ 检测到所有平台模拟已结束",
     "simCompleted": "✓ 模拟已完成",
+    "simFailed": "✗ 模拟失败",
     "reportRequestSent": "报告生成请求已发送，请稍候...",
     "startingReportGen": "正在启动报告生成...",
     "reportGenTaskStarted": "✓ 报告生成任务已启动: {reportId}",

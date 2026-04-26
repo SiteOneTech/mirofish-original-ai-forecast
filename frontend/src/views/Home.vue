@@ -176,7 +176,25 @@
             <div class="console-section">
               <div class="console-header">
                 <span class="console-label">{{ $t('home.simulationPrompt') }}</span>
+                <span class="examples-toggle" @click="showExamples = !showExamples">
+                  {{ showExamples ? '▲' : '▼' }} {{ $t('home.examplesLabel') }}
+                </span>
               </div>
+
+              <!-- Example prompts panel -->
+              <div v-if="showExamples" class="examples-panel">
+                <div
+                  v-for="(ex, i) in currentExamples"
+                  :key="i"
+                  class="example-item"
+                  @click="applyExample(ex.prompt)"
+                  :title="$t('home.examplesClickHint')"
+                >
+                  <span class="example-tag">{{ ex.tag }}</span>
+                  <span class="example-text">{{ ex.prompt }}</span>
+                </div>
+              </div>
+
               <div class="input-wrapper">
                 <textarea
                   v-model="formData.simulationRequirement"
@@ -214,10 +232,12 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import HistoryDatabase from '../components/HistoryDatabase.vue'
 import LanguageSwitcher from '../components/LanguageSwitcher.vue'
 
 const router = useRouter()
+const { locale } = useI18n()
 
 // 表单数据
 const formData = ref({
@@ -230,6 +250,42 @@ const files = ref([])
 // 状态
 const loading = ref(false)
 const error = ref('')
+
+// Examples panel
+const showExamples = ref(false)
+
+const EXAMPLES = {
+  es: [
+    { tag: 'POLÍTICA', prompt: 'Si el gobierno de México anuncia una reforma fiscal que incrementa el IVA del 16% al 20%, ¿qué tendencias de opinión pública surgirán en redes sociales y cuáles serán los grupos más afectados?' },
+    { tag: 'SALUD', prompt: 'Ante un brote de dengue en Colombia que afecta tres departamentos simultáneamente, simula cómo evolucionará la comunicación de riesgo, qué grupos promoverán medidas preventivas y cuáles las rechazarán.' },
+    { tag: 'TECNOLOGÍA', prompt: 'Una startup argentina lanza una IA generativa para reemplazar tareas administrativas en el sector público. Predice el debate en redes, resistencias sindicales y apoyo ciudadano durante las primeras semanas.' },
+    { tag: 'ECONOMÍA', prompt: 'Chile sube el salario mínimo un 25% de forma inmediata. Simula las reacciones del sector empresarial, trabajadores, economistas y medios de comunicación en Twitter y foros.' },
+    { tag: 'MEDIO AMBIENTE', prompt: '¿Cómo reaccionaría la opinión pública latinoamericana si Brasil anunciara la apertura de nuevas concesiones mineras en la Amazonia, y qué coaliciones de actores se formarían a favor y en contra?' }
+  ],
+  en: [
+    { tag: 'POLITICS', prompt: 'If a country announces a controversial immigration reform, how will public opinion evolve on social media over the next two weeks, and which demographic groups will drive the main narratives?' },
+    { tag: 'ECONOMY', prompt: 'A central bank unexpectedly raises interest rates by 1.5%. Simulate the public and market reaction, identify key opinion leaders, and predict sentiment trends across financial forums and social media.' },
+    { tag: 'TECHNOLOGY', prompt: 'A major tech company announces mass layoffs of 15,000 employees. Predict the discourse dynamics on social platforms, which communities will amplify the story, and how corporate response affects public trust.' },
+    { tag: 'HEALTH', prompt: 'A new vaccine mandate for public servants is announced. Simulate the debate between pro-vaccine and anti-mandate groups, media framing, and how sentiment evolves over 30 days.' },
+    { tag: 'ENVIRONMENT', prompt: 'A government announces an emergency carbon tax that doubles fuel prices. Predict protest movements, counter-narratives from industry, and the role of environmental groups in shaping public opinion.' }
+  ],
+  zh: [
+    { tag: '政治', prompt: '若某地出台新政策限制网络游戏时间，预测社会舆论走向、各年龄段群体反应以及家长与游戏玩家之间的对立态势。' },
+    { tag: '经济', prompt: '某知名企业宣布大规模裁员，预测社交媒体舆情演变、员工维权行动和公众对企业品牌信任度的影响。' },
+    { tag: '健康', prompt: '新型流感疫苗推出后，分析疫苗犹豫群体、积极接种群体和医疗专业人士在社交媒体上的争论如何演化。' },
+    { tag: '环境', prompt: '某城市宣布全面禁止燃油车，模拟市民、汽车工人、环保人士和汽车企业在舆论场上的博弈过程。' },
+    { tag: '教育', prompt: '高考改革取消文理分科，预测学生、家长、教师和教育机构在各平台上的情感倾向与意见聚合过程。' }
+  ]
+}
+
+const currentExamples = computed(() => {
+  return EXAMPLES[locale.value] || EXAMPLES.en
+})
+
+const applyExample = (prompt) => {
+  formData.value.simulationRequirement = prompt
+  showExamples.value = false
+}
 const isDragOver = ref(false)
 
 // 文件输入引用
@@ -688,10 +744,76 @@ const startSimulation = () => {
 .console-header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 15px;
   font-family: var(--font-mono);
   font-size: 0.75rem;
   color: #666;
+}
+
+.examples-toggle {
+  cursor: pointer;
+  font-size: 0.7rem;
+  color: #888;
+  user-select: none;
+  padding: 2px 6px;
+  border: 1px solid #DDD;
+  border-radius: 3px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.examples-toggle:hover {
+  background: #F0F0F0;
+  color: #444;
+}
+
+.examples-panel {
+  margin-bottom: 12px;
+  border: 1px solid #E5E7EB;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.example-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #F3F4F6;
+  font-size: 0.72rem;
+  transition: background 0.12s;
+}
+
+.example-item:last-child {
+  border-bottom: none;
+}
+
+.example-item:hover {
+  background: #F0F0F0;
+}
+
+.example-tag {
+  flex-shrink: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #FF4500;
+  background: #FFF3EE;
+  border: 1px solid #FFD5C0;
+  border-radius: 3px;
+  padding: 1px 5px;
+  margin-top: 1px;
+}
+
+.example-text {
+  color: #374151;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .upload-zone {

@@ -30,7 +30,9 @@
     "description": "MiroFish - Social Media Opinion Simulation System"
   },
   "nav": {
-    "visitGithub": "Visit our Github page"
+    "visitGithub": "Visit our Github page",
+    "toggleDarkMode": "Toggle dark mode",
+    "toggleLightMode": "Toggle light mode"
   },
   "home": {
     "tagline": "Concise & Universal Swarm Intelligence Engine",
@@ -69,6 +71,8 @@
     "promptPlaceholder": "// Describe your simulation or prediction requirement in natural language",
     "engineBadge": "Engine: MiroFish-V1.0",
     "startEngine": "Start Engine",
+    "examplesLabel": "Examples",
+    "examplesClickHint": "Click to use this example",
     "initializing": "Initializing..."
   },
   "main": {
@@ -247,7 +251,9 @@
     "panelRelatedEdges": "Related Edges",
     "panelRelatedNodes": "Related Nodes",
     "world1": "World 1",
-    "world2": "World 2"
+    "world2": "World 2",
+    "downloadReport": "Download Report",
+    "downloadReportTitle": "Download report as Markdown file"
   },
   "step5": {
     "interactiveTools": "Interactive Tools",
@@ -537,6 +543,7 @@
     "stopException": "Stop error: {error}",
     "allPlatformsCompleted": "✓ All platform simulations have ended",
     "simCompleted": "✓ Simulation completed",
+    "simFailed": "✗ Simulation failed",
     "reportRequestSent": "Report generation request sent, please wait...",
     "startingReportGen": "Starting report generation...",
     "reportGenTaskStarted": "✓ Report generation task started: {reportId}",

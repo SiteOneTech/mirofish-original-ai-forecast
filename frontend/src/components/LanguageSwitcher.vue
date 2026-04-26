@@ -1,20 +1,31 @@
 <template>
-  <div class="language-switcher" ref="switcherRef">
-    <button class="switcher-trigger" @click="toggleDropdown">
-      {{ currentLabel }}
-      <span class="caret">{{ open ? '▲' : '▼' }}</span>
+  <div class="lang-and-theme">
+    <div class="language-switcher" ref="switcherRef">
+      <button class="switcher-trigger" @click="toggleDropdown">
+        {{ currentLabel }}
+        <span class="caret">{{ open ? '▲' : '▼' }}</span>
+      </button>
+      <ul v-if="open" class="switcher-dropdown">
+        <li
+          v-for="loc in availableLocales"
+          :key="loc.key"
+          class="switcher-option"
+          :class="{ active: loc.key === locale }"
+          @click="switchLocale(loc.key)"
+        >
+          {{ loc.label }}
+        </li>
+      </ul>
+    </div>
+
+    <button
+      class="theme-toggle"
+      @click="toggleDark"
+      :title="isDark ? $t('nav.toggleLightMode') : $t('nav.toggleDarkMode')"
+    >
+      <span v-if="isDark">☀</span>
+      <span v-else>☾</span>
     </button>
-    <ul v-if="open" class="switcher-dropdown">
-      <li
-        v-for="loc in availableLocales"
-        :key="loc.key"
-        class="switcher-option"
-        :class="{ active: loc.key === locale }"
-        @click="switchLocale(loc.key)"
-      >
-        {{ loc.label }}
-      </li>
-    </ul>
   </div>
 </template>
 
@@ -26,6 +37,7 @@ import { availableLocales } from '@/i18n/index.js'
 const { locale } = useI18n()
 const open = ref(false)
 const switcherRef = ref(null)
+const isDark = ref(false)
 
 const currentLabel = computed(() => {
   const found = availableLocales.find(l => l.key === locale.value)
@@ -43,6 +55,12 @@ const switchLocale = (key) => {
   open.value = false
 }
 
+const toggleDark = () => {
+  isDark.value = !isDark.value
+  document.documentElement.classList.toggle('dark', isDark.value)
+  localStorage.setItem('theme', isDark.value ? 'dark' : 'light')
+}
+
 const onClickOutside = (e) => {
   if (switcherRef.value && !switcherRef.value.contains(e.target)) {
     open.value = false
@@ -52,6 +70,12 @@ const onClickOutside = (e) => {
 onMounted(() => {
   document.addEventListener('click', onClickOutside)
   document.documentElement.lang = locale.value
+  // Restore saved theme preference
+  const saved = localStorage.getItem('theme')
+  if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    isDark.value = true
+    document.documentElement.classList.add('dark')
+  }
 })
 
 onUnmounted(() => {
@@ -60,6 +84,12 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+.lang-and-theme {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .language-switcher {
   position: relative;
   display: inline-block;
@@ -120,5 +150,20 @@ onUnmounted(() => {
   color: var(--orange, #FF4500);
 }
 
+.theme-toggle {
+  background: transparent;
+  color: #333;
+  border: 1px solid #CCC;
+  padding: 4px 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  cursor: pointer;
+  line-height: 1;
+  transition: border-color 0.2s, background 0.2s;
+}
 
+.theme-toggle:hover {
+  border-color: #999;
+  background: rgba(0, 0, 0, 0.04);
+}
 </style>
