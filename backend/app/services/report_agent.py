@@ -1133,7 +1133,25 @@ class ReportAgent:
             if params_desc:
                 desc_parts.append(f"  参数: {params_desc}")
         return "\n".join(desc_parts)
-    
+
+    @staticmethod
+    def _strip_fake_tool_results(response: str) -> str:
+        """Strip any <tool_result> blocks the LLM fabricated in its response.
+
+        When the LLM generates a <tool_call> block and then continues to generate
+        a <tool_result> block in the same response, we must strip the fake result
+        before appending to message history. The real tool result will be injected
+        separately by the system.
+        """
+        cleaned = re.sub(
+            r'<tool_result>.*?</tool_result>',
+            '',
+            response,
+            flags=re.DOTALL,
+        )
+        cleaned = re.sub(r'\n{3,}', '\n\n', cleaned)
+        return cleaned.strip()
+
     def plan_outline(
         self, 
         progress_callback: Optional[Callable] = None
@@ -1335,7 +1353,8 @@ class ReportAgent:
 
                 if conflict_retries <= 2:
                     # 前两次：丢弃本次响应，要求 LLM 重新回复
-                    messages.append({"role": "assistant", "content": response})
+                    cleaned_response = ReportAgent._strip_fake_tool_results(response)
+                    messages.append({"role": "assistant", "content": cleaned_response})
                     messages.append({
                         "role": "user",
                         "content": (
@@ -1375,7 +1394,8 @@ class ReportAgent:
             if has_final_answer:
                 # 工具调用次数不足，拒绝并要求继续调工具
                 if tool_calls_count < min_tool_calls:
-                    messages.append({"role": "assistant", "content": response})
+                    cleaned_response = ReportAgent._strip_fake_tool_results(response)
+                    messages.append({"role": "assistant", "content": cleaned_response})
                     unused_tools = all_tools - used_tools
                     unused_hint = f"（这些工具还未使用，推荐用一下他们: {', '.join(unused_tools)}）" if unused_tools else ""
                     messages.append({
@@ -1405,7 +1425,8 @@ class ReportAgent:
             if has_tool_calls:
                 # 工具额度已耗尽 → 明确告知，要求输出 Final Answer
                 if tool_calls_count >= self.MAX_TOOL_CALLS_PER_SECTION:
-                    messages.append({"role": "assistant", "content": response})
+                    cleaned_response = ReportAgent._strip_fake_tool_results(response)
+                    messages.append({"role": "assistant", "content": cleaned_response})
                     messages.append({
                         "role": "user",
                         "content": REACT_TOOL_LIMIT_MSG.format(
@@ -1453,7 +1474,7 @@ class ReportAgent:
                 if unused_tools and tool_calls_count < self.MAX_TOOL_CALLS_PER_SECTION:
                     unused_hint = REACT_UNUSED_TOOLS_HINT.format(unused_list="、".join(unused_tools))
 
-                messages.append({"role": "assistant", "content": response})
+                messages.append({"role": "assistant", "content": ReportAgent._strip_fake_tool_results(response)})
                 messages.append({
                     "role": "user",
                     "content": REACT_OBSERVATION_TEMPLATE.format(
@@ -1468,7 +1489,7 @@ class ReportAgent:
                 continue
 
             # ── 情况3：既没有工具调用，也没有 Final Answer ──
-            messages.append({"role": "assistant", "content": response})
+            messages.append({"role": "assistant", "content": ReportAgent._strip_fake_tool_results(response)})
 
             if tool_calls_count < min_tool_calls:
                 # 工具调用次数不足，推荐未用过的工具
@@ -1857,7 +1878,7 @@ class ReportAgent:
                 tool_calls_made.append(call)
             
             # 将结果添加到消息
-            messages.append({"role": "assistant", "content": response})
+            messages.append({"role": "assistant", "content": ReportAgent._strip_fake_tool_results(response)})
             observation = "\n".join([f"[{r['tool']}结果]\n{r['result']}" for r in tool_results])
             messages.append({
                 "role": "user",

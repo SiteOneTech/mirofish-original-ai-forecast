@@ -136,6 +136,16 @@
             </svg>
           </button>
 
+          <!-- Download Report Button - 在完成后显示 -->
+          <button v-if="isComplete && reportId" class="download-report-btn" @click="handleDownloadReport" :title="$t('step4.downloadReportTitle')">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>{{ $t('step4.downloadReport') }}</span>
+          </button>
+
           <div class="workflow-divider"></div>
         </div>
 
@@ -393,7 +403,7 @@
 import { ref, computed, watch, onMounted, onUnmounted, nextTick, h, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { getAgentLog, getConsoleLog } from '../api/report'
+import { getAgentLog, getConsoleLog, downloadReport } from '../api/report'
 
 const router = useRouter()
 const { t } = useI18n()
@@ -410,6 +420,12 @@ const emit = defineEmits(['add-log', 'update-status'])
 const goToInteraction = () => {
   if (props.reportId) {
     router.push({ name: 'Interaction', params: { reportId: props.reportId } })
+  }
+}
+
+const handleDownloadReport = () => {
+  if (props.reportId) {
+    downloadReport(props.reportId)
   }
 }
 
@@ -3430,6 +3446,39 @@ watch(() => props.reportId, (newId) => {
 
 .next-step-btn:hover svg {
   transform: translateX(4px);
+}
+
+.download-report-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: calc(100% - 40px);
+  margin: 8px 20px 0 20px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+  background: #F3F4F6;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.download-report-btn:hover {
+  background: #E5E7EB;
+  color: #111827;
+  border-color: #D1D5DB;
+}
+
+.download-report-btn svg {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.download-report-btn:hover svg {
+  transform: translateY(2px);
 }
 
 /* Workflow Empty */
