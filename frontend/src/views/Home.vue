@@ -4,8 +4,9 @@
     <nav class="navbar">
       <div class="nav-brand">MIROFISH</div>
       <div class="nav-links">
+        <LanguageSwitcher />
         <a href="https://github.com/666ghj/MiroFish" target="_blank" class="github-link">
-          访问我们的Github主页 <span class="arrow">↗</span>
+          {{ $t('nav.visitGithub') }} <span class="arrow">↗</span>
         </a>
       </div>
     </nav>
@@ -15,21 +16,25 @@
       <section class="hero-section">
         <div class="hero-left">
           <div class="tag-row">
-            <span class="orange-tag">简洁通用的群体智能引擎</span>
-            <span class="version-text">/ v0.1-预览版</span>
+            <span class="orange-tag">{{ $t('home.tagline') }}</span>
+            <span class="version-text">{{ $t('home.version') }}</span>
           </div>
           
           <h1 class="main-title">
-            上传任意报告<br>
-            <span class="gradient-text">即刻推演未来</span>
+            {{ $t('home.heroTitle1') }}<br>
+            <span class="gradient-text">{{ $t('home.heroTitle2') }}</span>
           </h1>
           
           <div class="hero-desc">
             <p>
-              即使只有一段文字，<span class="highlight-bold">MiroFish</span> 也能基于其中的现实种子，全自动生成与之对应的至多<span class="highlight-orange">百万级Agent</span>构成的平行世界。通过上帝视角注入变量，在复杂的群体交互中寻找动态环境下的<span class="highlight-code">“局部最优解”</span>
+              <i18n-t keypath="home.heroDesc" tag="span">
+                <template #brand><span class="highlight-bold">{{ $t('home.heroDescBrand') }}</span></template>
+                <template #agentScale><span class="highlight-orange">{{ $t('home.heroDescAgentScale') }}</span></template>
+                <template #optimalSolution><span class="highlight-code">{{ $t('home.heroDescOptimalSolution') }}</span></template>
+              </i18n-t>
             </p>
             <p class="slogan-text">
-              让未来在 Agent 群中预演，让决策在百战后胜出<span class="blinking-cursor">_</span>
+              {{ $t('home.slogan') }}<span class="blinking-cursor">_</span>
             </p>
           </div>
            
@@ -53,65 +58,65 @@
         <!-- 左栏：状态与步骤 -->
         <div class="left-panel">
           <div class="panel-header">
-            <span class="status-dot">■</span> 系统状态
+            <span class="status-dot">■</span> {{ $t('home.systemStatus') }}
           </div>
           
-          <h2 class="section-title">准备就绪</h2>
+          <h2 class="section-title">{{ $t('home.systemReady') }}</h2>
           <p class="section-desc">
-            预测引擎待命中，可上传多份非结构化数据以初始化模拟序列
+            {{ $t('home.systemReadyDesc') }}
           </p>
           
           <!-- 数据指标卡片 -->
           <div class="metrics-row">
             <div class="metric-card">
-              <div class="metric-value">低成本</div>
-              <div class="metric-label">常规模拟平均5$/次</div>
+              <div class="metric-value">{{ $t('home.metricLowCost') }}</div>
+              <div class="metric-label">{{ $t('home.metricLowCostDesc') }}</div>
             </div>
             <div class="metric-card">
-              <div class="metric-value">高可用</div>
-              <div class="metric-label">最多百万级Agent模拟</div>
+              <div class="metric-value">{{ $t('home.metricHighAvail') }}</div>
+              <div class="metric-label">{{ $t('home.metricHighAvailDesc') }}</div>
             </div>
           </div>
 
           <!-- 项目模拟步骤介绍 (新增区域) -->
           <div class="steps-container">
             <div class="steps-header">
-               <span class="diamond-icon">◇</span> 工作流序列
+               <span class="diamond-icon">◇</span> {{ $t('home.workflowSequence') }}
             </div>
             <div class="workflow-list">
               <div class="workflow-item">
                 <span class="step-num">01</span>
                 <div class="step-info">
-                  <div class="step-title">图谱构建</div>
-                  <div class="step-desc">现实种子提取 & 个体与群体记忆注入 & GraphRAG构建</div>
+                  <div class="step-title">{{ $t('home.step01Title') }}</div>
+                  <div class="step-desc">{{ $t('home.step01Desc') }}</div>
                 </div>
               </div>
               <div class="workflow-item">
                 <span class="step-num">02</span>
                 <div class="step-info">
-                  <div class="step-title">环境搭建</div>
-                  <div class="step-desc">实体关系抽取 & 人设生成 & 环境配置Agent注入仿真参数</div>
+                  <div class="step-title">{{ $t('home.step02Title') }}</div>
+                  <div class="step-desc">{{ $t('home.step02Desc') }}</div>
                 </div>
               </div>
               <div class="workflow-item">
                 <span class="step-num">03</span>
                 <div class="step-info">
-                  <div class="step-title">开始模拟</div>
-                  <div class="step-desc">双平台并行模拟 & 自动解析预测需求 & 动态更新时序记忆</div>
+                  <div class="step-title">{{ $t('home.step03Title') }}</div>
+                  <div class="step-desc">{{ $t('home.step03Desc') }}</div>
                 </div>
               </div>
               <div class="workflow-item">
                 <span class="step-num">04</span>
                 <div class="step-info">
-                  <div class="step-title">报告生成</div>
-                  <div class="step-desc">ReportAgent拥有丰富的工具集与模拟后环境进行深度交互</div>
+                  <div class="step-title">{{ $t('home.step04Title') }}</div>
+                  <div class="step-desc">{{ $t('home.step04Desc') }}</div>
                 </div>
               </div>
               <div class="workflow-item">
                 <span class="step-num">05</span>
                 <div class="step-info">
-                  <div class="step-title">深度互动</div>
-                  <div class="step-desc">与模拟世界中的任意一位进行对话 & 与ReportAgent进行对话</div>
+                  <div class="step-title">{{ $t('home.step05Title') }}</div>
+                  <div class="step-desc">{{ $t('home.step05Desc') }}</div>
                 </div>
               </div>
             </div>
@@ -124,8 +129,8 @@
             <!-- 上传区域 -->
             <div class="console-section">
               <div class="console-header">
-                <span class="console-label">01 / 现实种子</span>
-                <span class="console-meta">支持格式: PDF, MD, TXT</span>
+                <span class="console-label">{{ $t('home.realitySeed') }}</span>
+                <span class="console-meta">{{ $t('home.supportedFormats') }}</span>
               </div>
               
               <div 
@@ -148,8 +153,8 @@
                 
                 <div v-if="files.length === 0" class="upload-placeholder">
                   <div class="upload-icon">↑</div>
-                  <div class="upload-title">拖拽文件上传</div>
-                  <div class="upload-hint">或点击浏览文件系统</div>
+                  <div class="upload-title">{{ $t('home.dragToUpload') }}</div>
+                  <div class="upload-hint">{{ $t('home.orBrowse') }}</div>
                 </div>
                 
                 <div v-else class="file-list">
@@ -164,23 +169,41 @@
 
             <!-- 分割线 -->
             <div class="console-divider">
-              <span>输入参数</span>
+              <span>{{ $t('home.inputParams') }}</span>
             </div>
 
             <!-- 输入区域 -->
             <div class="console-section">
               <div class="console-header">
-                <span class="console-label">>_ 02 / 模拟提示词</span>
+                <span class="console-label">{{ $t('home.simulationPrompt') }}</span>
+                <span class="examples-toggle" @click="showExamples = !showExamples">
+                  {{ showExamples ? '▲' : '▼' }} {{ $t('home.examplesLabel') }}
+                </span>
               </div>
+
+              <!-- Example prompts panel -->
+              <div v-if="showExamples" class="examples-panel">
+                <div
+                  v-for="(ex, i) in currentExamples"
+                  :key="i"
+                  class="example-item"
+                  @click="applyExample(ex.prompt)"
+                  :title="$t('home.examplesClickHint')"
+                >
+                  <span class="example-tag">{{ ex.tag }}</span>
+                  <span class="example-text">{{ ex.prompt }}</span>
+                </div>
+              </div>
+
               <div class="input-wrapper">
                 <textarea
                   v-model="formData.simulationRequirement"
                   class="code-input"
-                  placeholder="// 用自然语言输入模拟或预测需求（例.武大若发布撤销肖某处分的公告，会引发什么舆情走向）"
+                  :placeholder="$t('home.promptPlaceholder')"
                   rows="6"
                   :disabled="loading"
                 ></textarea>
-                <div class="model-badge">引擎: MiroFish-V1.0</div>
+                <div class="model-badge">{{ $t('home.engineBadge') }}</div>
               </div>
             </div>
 
@@ -191,8 +214,8 @@
                 @click="startSimulation"
                 :disabled="!canSubmit || loading"
               >
-                <span v-if="!loading">启动引擎</span>
-                <span v-else>初始化中...</span>
+                <span v-if="!loading">{{ $t('home.startEngine') }}</span>
+                <span v-else>{{ $t('home.initializing') }}</span>
                 <span class="btn-arrow">→</span>
               </button>
             </div>
@@ -209,9 +232,12 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import HistoryDatabase from '../components/HistoryDatabase.vue'
+import LanguageSwitcher from '../components/LanguageSwitcher.vue'
 
 const router = useRouter()
+const { locale } = useI18n()
 
 // 表单数据
 const formData = ref({
@@ -224,6 +250,66 @@ const files = ref([])
 // 状态
 const loading = ref(false)
 const error = ref('')
+
+// Examples panel
+const showExamples = ref(false)
+
+const EXAMPLES = {
+  es: [
+    { tag: 'POLÍTICA', prompt: 'Si el gobierno de México anunciara una reforma fiscal que incrementara el IVA del 16% al 20%, ¿qué tendencias de opinión pública surgirían en redes sociales y cuáles serían los grupos más afectados?' },
+    { tag: 'SALUD', prompt: 'Ante un brote de dengue en Colombia que afecta tres departamentos simultáneamente, simula cómo evolucionará la comunicación de riesgo, qué grupos promoverán medidas preventivas y cuáles las rechazarán.' },
+    { tag: 'TECNOLOGÍA', prompt: 'Una startup argentina lanza una IA generativa para reemplazar tareas administrativas en el sector público. Predice el debate en redes, resistencias sindicales y apoyo ciudadano durante las primeras semanas.' },
+    { tag: 'ECONOMÍA', prompt: 'Si Chile subiera el salario mínimo un 25% de forma inmediata, ¿cómo reaccionarían el sector empresarial, los trabajadores, los economistas y los medios de comunicación en redes sociales y foros?' },
+    { tag: 'MEDIO AMBIENTE', prompt: '¿Cómo reaccionaría la opinión pública latinoamericana si Brasil anunciara la apertura de nuevas concesiones mineras en la Amazonia, y qué coaliciones de actores se formarían a favor y en contra?' },
+    {
+      tag: '🇨🇴 PAGOS',
+      prompt: 'En Colombia se aprueba una ley que obliga a todo comercio con ingresos superiores a 5 SMMLV a aceptar pagos electrónicos (Nequi, Daviplata, PSE, datafono). Simula las reacciones diferenciadas por estrato socioeconómico: empresarios del estrato 5-6 que ya operan con POS y facturación electrónica, emprendedores de estrato 3-4 con tiendas de barrio y ventas por WhatsApp, y trabajadores informales de estrato 1-2 que dependen del efectivo. Analiza qué actores impulsarán la adopción digital, quiénes se resistirán, cómo reaccionarán los gremios (Fenalco, ACOPI, Asobancaria), y qué narrativas de exclusión financiera versus modernización dominarán en redes sociales, grupos de WhatsApp y foros de emprendimiento durante los primeros 30 días tras la publicación de la ley.'
+    },
+    {
+      tag: '🇻🇪 PAGOS',
+      prompt: 'Venezuela anuncia la integración obligatoria del sistema Pago Móvil interbancario con plataformas de comercio electrónico internacionales (Shopify, WooCommerce) para facilitar exportaciones de PYMEs. Simula las reacciones diferenciadas: grandes empresarios y holding familiares que operan en dólares cash y Zelle y temen perder control cambiario; emprendedores de clase media que venden por Instagram y cobran en Zinli, Zelle o cripto (USDT) y ven la medida como oportunidad de formalización; microempresarios populares que usan Pago Móvil en bolívares y enfrentan la brecha tecnológica; y la diáspora venezolana que envía remesas. Predice qué discursos sobre dolarización, confianza bancaria, corrupción en el BCV y soberanía económica emergirán en Twitter/X, Telegram y grupos de emprendedores durante las dos semanas siguientes al anuncio.'
+    }
+  ],
+  en: [
+    { tag: 'POLITICS', prompt: 'If a country announces a controversial immigration reform, how will public opinion evolve on social media over the next two weeks, and which demographic groups will drive the main narratives?' },
+    { tag: 'ECONOMY', prompt: 'A central bank unexpectedly raises interest rates by 1.5%. Simulate the public and market reaction, identify key opinion leaders, and predict sentiment trends across financial forums and social media.' },
+    { tag: 'TECHNOLOGY', prompt: 'A major tech company announces mass layoffs of 15,000 employees. Predict the discourse dynamics on social platforms, which communities will amplify the story, and how corporate response affects public trust.' },
+    { tag: 'HEALTH', prompt: 'A new vaccine mandate for public servants is announced. Simulate the debate between pro-vaccine and anti-mandate groups, media framing, and how sentiment evolves over 30 days.' },
+    { tag: 'ENVIRONMENT', prompt: 'A government announces an emergency carbon tax that doubles fuel prices. Predict protest movements, counter-narratives from industry, and the role of environmental groups in shaping public opinion.' },
+    {
+      tag: '🇨🇴 FINTECH',
+      prompt: 'Colombia passes a law requiring all businesses earning above 5× minimum wage to accept digital payments (Nequi, Daviplata, PSE, POS terminals). Simulate the stratified reaction across socioeconomic classes: upper-class entrepreneurs (estrato 5-6) already using electronic invoicing who welcome it; middle-class shop owners (estrato 3-4) running WhatsApp-based commerce who fear costs; informal workers (estrato 1-2) dependent on cash who see financial exclusion. Model how industry guilds (Fenalco, ACOPI, Asobancaria), fintech startups, and civil society organizations will shape the narrative around financial inclusion vs. digital divide during the first 30 days after the law is published.'
+    },
+    {
+      tag: '🇻🇪 FINTECH',
+      prompt: 'Venezuela mandates integration of the Pago Móvil interbank system with international e-commerce platforms (Shopify, WooCommerce) to enable MSME exports. Simulate layered reactions: large holding companies operating in USD cash and Zelle fearing loss of exchange-rate control; middle-class entrepreneurs selling on Instagram and collecting via Zinli, Zelle, or USDT seeing it as a formalization opportunity; popular-sector micro-businesses using bolivar Pago Móvil facing the tech gap; and the Venezuelan diaspora sending remittances. Predict which discourses around dollarization, banking trust, BCV corruption, and economic sovereignty will emerge on Twitter/X and Telegram entrepreneur groups in the two weeks following the announcement.'
+    }
+  ],
+  zh: [
+    { tag: '政治', prompt: '若某地出台新政策限制网络游戏时间，预测社会舆论走向、各年龄段群体反应以及家长与游戏玩家之间的对立态势。' },
+    { tag: '经济', prompt: '某知名企业宣布大规模裁员，预测社交媒体舆情演变、员工维权行动和公众对企业品牌信任度的影响。' },
+    { tag: '健康', prompt: '新型流感疫苗推出后，分析疫苗犹豫群体、积极接种群体和医疗专业人士在社交媒体上的争论如何演化。' },
+    { tag: '环境', prompt: '某城市宣布全面禁止燃油车，模拟市民、汽车工人、环保人士和汽车企业在舆论场上的博弈过程。' },
+    { tag: '教育', prompt: '高考改革取消文理分科，预测学生、家长、教师和教育机构在各平台上的情感倾向与意见聚合过程。' },
+    {
+      tag: '🇨🇴 支付',
+      prompt: '哥伦比亚通过法律，要求月收入超过5倍最低工资的所有商家强制接受电子支付（Nequi、Daviplata、PSE及POS机）。模拟不同社会阶层的分化反应：已使用电子发票的高阶层（estrato 5-6）企业主持欢迎态度；依赖WhatsApp经营的中阶层（estrato 3-4）小店主担忧成本；依赖现金的低阶层（estrato 1-2）非正规从业者感到被边缘化。预测行业协会（Fenalco、ACOPI、Asobancaria）、金融科技初创公司和公民社会组织如何在社交媒体上围绕"金融普惠"与"数字鸿沟"展开舆论博弈。'
+    },
+    {
+      tag: '🇻🇪 支付',
+      prompt: '委内瑞拉宣布将银行间移动支付系统Pago Móvil与国际电商平台（Shopify、WooCommerce）强制对接，支持中小企业出口。模拟多层次反应：以现金美元和Zelle运营的大型控股企业担忧汇率管控失效；通过Instagram销售、用Zinli/Zelle/USDT收款的中产创业者视此为合法化机会；使用玻利瓦尔Pago Móvil的底层微型企业主面临技术鸿沟；以及海外侨民汇款群体的态度。预测有关美元化、银行信任、央行腐败和经济主权的话语如何在Twitter/X及Telegram创业者群组中扩散。'
+    }
+  ]
+}
+
+const currentExamples = computed(() => {
+  return EXAMPLES[locale.value] || EXAMPLES.en
+})
+
+const applyExample = (prompt) => {
+  formData.value.simulationRequirement = prompt
+  showExamples.value = false
+}
 const isDragOver = ref(false)
 
 // 文件输入引用
@@ -351,6 +437,7 @@ const startSimulation = () => {
 .nav-links {
   display: flex;
   align-items: center;
+  gap: 16px;
 }
 
 .github-link {
@@ -681,10 +768,76 @@ const startSimulation = () => {
 .console-header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 15px;
   font-family: var(--font-mono);
   font-size: 0.75rem;
   color: #666;
+}
+
+.examples-toggle {
+  cursor: pointer;
+  font-size: 0.7rem;
+  color: #888;
+  user-select: none;
+  padding: 2px 6px;
+  border: 1px solid #DDD;
+  border-radius: 3px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.examples-toggle:hover {
+  background: #F0F0F0;
+  color: #444;
+}
+
+.examples-panel {
+  margin-bottom: 12px;
+  border: 1px solid #E5E7EB;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.example-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #F3F4F6;
+  font-size: 0.72rem;
+  transition: background 0.12s;
+}
+
+.example-item:last-child {
+  border-bottom: none;
+}
+
+.example-item:hover {
+  background: #F0F0F0;
+}
+
+.example-tag {
+  flex-shrink: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #FF4500;
+  background: #FFF3EE;
+  border: 1px solid #FFD5C0;
+  border-radius: 3px;
+  padding: 1px 5px;
+  margin-top: 1px;
+}
+
+.example-text {
+  color: #374151;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .upload-zone {
@@ -886,5 +1039,61 @@ const startSimulation = () => {
     max-width: 200px;
     margin-bottom: 20px;
   }
+}
+</style>
+
+<style>
+/* English locale adjustments (unscoped to target html[lang]) */
+html[lang="en"] .main-title {
+  font-size: 3.5rem;
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  letter-spacing: -1px;
+}
+
+html[lang="en"] .hero-desc {
+  text-align: left;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  letter-spacing: 0;
+}
+
+html[lang="en"] .slogan-text {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  letter-spacing: 0;
+}
+
+html[lang="en"] .tag-row {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+html[lang="en"] .navbar .nav-links {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Left pane: system status + workflow */
+html[lang="en"] .status-section {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+html[lang="en"] .status-section .status-ready {
+  font-size: 1.6rem;
+}
+
+html[lang="en"] .status-section .metric-value {
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 1.4rem;
+}
+
+html[lang="en"] .workflow-list .step-title {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+html[lang="en"] .workflow-list .step-desc {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-size: 0.72rem !important;
+  line-height: 1.4 !important;
+}
+
+html[lang="en"] .workflow-list {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 </style>
