@@ -20,6 +20,24 @@ from .base import GraphBackend
 logger = logging.getLogger(__name__)
 
 
+def _extract_json_payload(content: str) -> str:
+    """Best-effort extraction for providers that wrap JSON in prose or fences."""
+    text = (content or "").strip()
+    if text.startswith("```"):
+        lines = text.splitlines()
+        if lines and lines[0].startswith("```"):
+            lines = lines[1:]
+        if lines and lines[-1].startswith("```"):
+            lines = lines[:-1]
+        text = "\n".join(lines).strip()
+
+    start = text.find("{")
+    end = text.rfind("}")
+    if start != -1 and end != -1 and end > start:
+        return text[start : end + 1]
+    return text
+
+
 @dataclass
 class _CompatEpisode:
     uuid: str
@@ -158,9 +176,62 @@ class GraphitiBackend(GraphBackend):
             embedding_dim=Config.GRAPHITI_EMBEDDER_DIM,
         )
 
+        class PromptJsonOpenAIGenericClient(OpenAIGenericClient):
+            """OpenAI-compatible client for providers without response_format support."""
+
+            async def _generate_response(
+                self,
+                messages,
+                response_model=None,
+                max_tokens=None,
+                model_size=None,
+            ):
+                openai_messages = []
+                for message in messages:
+                    message.content = self._clean_input(message.content)
+                    if message.role in {"system", "user"}:
+                        openai_messages.append({"role": message.role, "content": message.content})
+
+                if response_model is not None:
+                    schema = json.dumps(response_model.model_json_schema(), ensure_ascii=False)
+                    openai_messages.append(
+                        {
+                            "role": "user",
+                            "content": (
+                                "Return only valid JSON. Do not include Markdown, code fences, "
+                                "or explanatory text. The JSON must conform to this schema:\n"
+                                f"{schema}"
+                            ),
+                        }
+                    )
+                else:
+                    openai_messages.append(
+                        {
+                            "role": "user",
+                            "content": (
+                                "Return only valid JSON. Do not include Markdown, code fences, "
+                                "or explanatory text."
+                            ),
+                        }
+                    )
+
+                response = await self.client.chat.completions.create(
+                    model=self.model,
+                    messages=openai_messages,
+                    temperature=self.temperature,
+                    max_tokens=max_tokens or self.max_tokens,
+                )
+                result = response.choices[0].message.content or ""
+                return json.loads(_extract_json_payload(result))
+
         llm_client_mode = (Config.GRAPHITI_LLM_CLIENT_MODE or "openai").lower()
         if llm_client_mode == "generic":
-            llm_client = OpenAIGenericClient(
+            generic_client = (
+                PromptJsonOpenAIGenericClient
+                if os.environ.get("GRAPHITI_USE_RESPONSE_FORMAT", "true").lower() == "false"
+                else OpenAIGenericClient
+            )
+            llm_client = generic_client(
                 config=llm_config,
                 max_tokens=Config.GRAPHITI_LLM_MAX_TOKENS,
             )
