@@ -1,0 +1,25 @@
+[Unit]
+Description=MiroFish Graphiti staging backend API
+After=network-online.target docker.service
+Wants=network-online.target
+Requires=docker.service
+
+[Service]
+Type=simple
+User=mirofish
+Group=mirofish
+WorkingDirectory=/opt/mirofish-graphiti/app/backend
+EnvironmentFile=/etc/mirofish/mirofish-graphiti.env
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/opt/mirofish-graphiti/app/backend/.venv/bin/gunicorn --bind 127.0.0.1:5002 --workers 2 --threads 4 --timeout 900 'app:create_app()'
+Restart=always
+RestartSec=5
+KillSignal=SIGTERM
+TimeoutStopSec=30
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ReadWritePaths=/opt/mirofish-graphiti/app/backend/uploads
+
+[Install]
+WantedBy=multi-user.target
